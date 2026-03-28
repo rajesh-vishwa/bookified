@@ -94,30 +94,30 @@ export const formatDuration = (seconds: number): string => {
 export async function parsePDFFile(file: File) {
   try {
     const pdfjsLib = await import("pdfjs-dist");
-
+    console.log("1");
     if (typeof window !== "undefined") {
       pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
         "pdfjs-dist/build/pdf.worker.min.mjs",
         import.meta.url,
       ).toString();
     }
-
+    console.log("11");
     // Read file as array buffer
     const arrayBuffer = await file.arrayBuffer();
 
     // Load PDF document
     const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
     const pdfDocument = await loadingTask.promise;
-
+    console.log("111");
     // Render first page as cover image
     const firstPage = await pdfDocument.getPage(1);
     const viewport = firstPage.getViewport({ scale: 2 }); // 2x scale for better quality
-
+    console.log("1111");
     const canvas = document.createElement("canvas");
     canvas.width = viewport.width;
     canvas.height = viewport.height;
     const context = canvas.getContext("2d");
-
+    console.log("11111");
     if (!context) {
       throw new Error("Could not get canvas context");
     }
@@ -126,10 +126,10 @@ export async function parsePDFFile(file: File) {
       canvasContext: context,
       viewport: viewport,
     }).promise;
-
+    console.log("6");
     // Convert canvas to data URL
     const coverDataURL = canvas.toDataURL("image/png");
-
+    console.log("6.1");
     // Extract text from all pages
     let fullText = "";
 
@@ -142,13 +142,13 @@ export async function parsePDFFile(file: File) {
         .join(" ");
       fullText += pageText + "\n";
     }
-
+    console.log("7");
     // Split text into segments for search
     const segments = splitIntoSegments(fullText);
-
+    console.log("8");
     // Clean up PDF document resources
     await pdfDocument.destroy();
-
+    console.log("9");
     return {
       content: segments,
       cover: coverDataURL,

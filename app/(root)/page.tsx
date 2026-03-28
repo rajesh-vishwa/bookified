@@ -1,7 +1,6 @@
 import BookCard from "@/components/BookCard";
 import HeroSection from "@/components/HeroSection";
 import { BookCardProps } from "@/types";
-import React from "react";
 
 const books: BookCardProps[] = [
   {

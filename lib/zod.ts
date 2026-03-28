@@ -1,15 +1,23 @@
-import { ACCEPTED_IMAGE_TYPES, ACCEPTED_PDF_TYPES, MAX_FILE_SIZE, MAX_IMAGE_SIZE } from "@/lib/constants";
+import {
+  ACCEPTED_IMAGE_TYPES,
+  ACCEPTED_PDF_TYPES,
+  MAX_FILE_SIZE,
+  MAX_IMAGE_SIZE,
+} from "@/lib/constants";
 import { z } from "zod";
 
 const hasBrowserFile = typeof File !== "undefined";
 
-const fileSchema = z
-  .custom<File>((value) => (hasBrowserFile ? value instanceof File : true), {
+const fileSchema = z.custom<File>(
+  (value) => (hasBrowserFile ? value instanceof File : true),
+  {
     message: "A file is required.",
-  });
+  },
+);
 
 const optionalFileSchema = z.custom<File | undefined>(
-  (value) => (value === undefined ? true : hasBrowserFile ? value instanceof File : true),
+  (value) =>
+    value === undefined ? true : hasBrowserFile ? value instanceof File : true,
   {
     message: "Invalid file.",
   },
@@ -17,7 +25,10 @@ const optionalFileSchema = z.custom<File | undefined>(
 
 export const UploadSchema = z.object({
   pdfFile: fileSchema
-    .refine((file) => file.size <= MAX_FILE_SIZE, "PDF file must be 50MB or less.")
+    .refine(
+      (file) => file.size <= MAX_FILE_SIZE,
+      "PDF file must be 50MB or less.",
+    )
     .refine(
       (file) => ACCEPTED_PDF_TYPES.includes(file.type),
       "Please upload a valid PDF file.",
@@ -34,8 +45,7 @@ export const UploadSchema = z.object({
     .optional(),
   title: z.string().trim().min(2, "Title is required."),
   author: z.string().trim().min(2, "Author name is required."),
-  voice: z.enum(["dave", "daniel", "chris", "rachel", "sarah"], {
+  persona: z.enum(["dave", "daniel", "chris", "rachel", "sarah"], {
     error: "Please choose an assistant voice.",
   }),
 });
-
