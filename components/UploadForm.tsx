@@ -5,11 +5,7 @@ import { ImageIcon, Upload, X } from "lucide-react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import {
-  DEFAULT_VOICE,
-  voiceCategories,
-  voiceOptions,
-} from "@/lib/constants";
+import { DEFAULT_VOICE, voiceCategories, voiceOptions } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { UploadSchema } from "@/lib/zod";
 import type { BookUploadFormValues } from "@/types";
@@ -140,7 +136,7 @@ const UploadForm = () => {
     },
   });
 
-  const onSubmit = async () => {
+  const onSubmit = async (data: BookUploadFormValues) => {
     try {
       setIsSubmitting(true);
       await new Promise((resolve) => setTimeout(resolve, 1200));
@@ -155,10 +151,7 @@ const UploadForm = () => {
 
       <div className="new-book-wrapper">
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-8"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
               name="pdfFile"
@@ -246,17 +239,24 @@ const UploadForm = () => {
               name="voice"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="form-label">Choose Assistant Voice</FormLabel>
+                  <FormLabel className="form-label">
+                    Choose Assistant Voice
+                  </FormLabel>
                   <FormDescription>
                     Choose a voice that fits your preferred reading companion.
                   </FormDescription>
                   <FormControl>
                     <div className="space-y-6">
                       <div className="space-y-3">
-                        <p className="text-sm font-semibold text-[#5e4e3a]">Male Voices</p>
+                        <p className="text-sm font-semibold text-[#5e4e3a]">
+                          Male Voices
+                        </p>
                         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                           {voiceCategories.male.map((voiceKey) => {
-                            const voice = voiceOptions[voiceKey as keyof typeof voiceOptions];
+                            const voice =
+                              voiceOptions[
+                                voiceKey as keyof typeof voiceOptions
+                              ];
                             const isSelected = field.value === voiceKey;
 
                             return (
@@ -287,10 +287,15 @@ const UploadForm = () => {
                       </div>
 
                       <div className="space-y-3">
-                        <p className="text-sm font-semibold text-[#5e4e3a]">Female Voices</p>
+                        <p className="text-sm font-semibold text-[#5e4e3a]">
+                          Female Voices
+                        </p>
                         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                           {voiceCategories.female.map((voiceKey) => {
-                            const voice = voiceOptions[voiceKey as keyof typeof voiceOptions];
+                            const voice =
+                              voiceOptions[
+                                voiceKey as keyof typeof voiceOptions
+                              ];
                             const isSelected = field.value === voiceKey;
 
                             return (
